@@ -390,7 +390,7 @@ a:hover { color: var(--red-dark); }
   padding: .2rem .6rem; white-space: nowrap;
 }
 .fa-line::before, .fa-line::after {
-  content: '→'; color: rgba(230,57,70,.6); font-size: .9rem;
+  content: '→'; color: rgba(201,162,39,.6); font-size: .9rem;
 }
 .flow-arrows--right .fa-line::before { content: ''; }
 
