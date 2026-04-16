@@ -505,13 +505,13 @@ a:hover { color: var(--red-dark); }
 }
 .mission-quote-block em { font-style: normal; color: var(--gold); font-weight: 700; }
 
-.mission-body {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem;
+.mission-single {
+  max-width: 780px;
+  margin-bottom: 2.5rem;
 }
-@media (max-width: 720px) { .mission-body { grid-template-columns: 1fr; gap: 2rem; } }
-.mission-col p { color: rgba(255,255,255,.65); font-size: .95rem; line-height: 1.85; margin-bottom: 1.1rem; }
-.mission-col p:last-child { margin-bottom: 0; }
-.mission-col strong { color: #fff; }
+.mission-single p { color: rgba(255,255,255,.65); font-size: .97rem; line-height: 1.9; margin-bottom: 1.1rem; }
+.mission-single p:last-child { margin-bottom: 0; }
+.mission-single strong { color: #fff; }
 .mission-hl {
   background: rgba(255,255,255,.05); border-left: 3px solid var(--red);
   padding: .8rem 1rem; border-radius: 0 8px 8px 0;
@@ -535,6 +535,23 @@ a:hover { color: var(--red-dark); }
 .mission-path span { font-size: .85rem; color: rgba(255,255,255,.5); }
 .mp-arrow { color: var(--red); font-weight: 700; }
 .mp-end { color: var(--gold) !important; font-weight: 700; }
+
+/* 初衷 flow row */
+.mission-flow-row {
+  display: inline-flex; align-items: center; gap: 1rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--r);
+  padding: 1.4rem 2rem;
+  flex-wrap: wrap;
+}
+.mfr-item {
+  display: flex; align-items: center; gap: .8rem;
+}
+.mfr-icon { font-size: 1.6rem; flex-shrink: 0; }
+.mfr-item strong { display: block; color: #fff; font-size: .93rem; font-weight: 700; margin-bottom: .15rem; }
+.mfr-item span { font-size: .8rem; color: rgba(255,255,255,.45); }
+.mfr-arrow { color: var(--red); font-size: 1.4rem; font-weight: 900; flex-shrink: 0; }
 
 /* ── STEPS ── */
 .steps-section {
