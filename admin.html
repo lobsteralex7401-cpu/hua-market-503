@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>後台管理 — 5/3 華市集</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    [hidden] { display: none !important; }
+    :root {
+      --red:      #e63946;
+      --red-dark: #b52a35;
+      --red-pale: #fff5f5;
+      --ink:      #1a1a2e;
+      --sub:      #555570;
+      --border:   #e2ddd6;
+      --bg:       #f8f5f5;
+      --white:    #ffffff;
+      --green:    #2e7d32;
+      --coral:    #e05a5a;
+    }
+    body { font-family: 'Noto Sans TC', sans-serif; font-size: 14px; background: var(--bg); color: var(--ink); min-height: 100vh; }
+    a { color: var(--red); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* LOGIN */
+    .login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #1a0a0e 0%, #2d0f14 50%, #1a1a2e 100%);
+      padding: 1.5rem;
+    }
+    .login-box {
+      background: #fff; border-radius: 16px; padding: 2.8rem 2.4rem;
+      max-width: 400px; width: 100%; box-shadow: 0 12px 50px rgba(0,0,0,.4);
+      text-align: center;
+    }
+    .login-logo-wrap { display: flex; align-items: center; justify-content: center; gap: .6rem; margin-bottom: .5rem; }
+    .login-logo-img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid #c9a227; }
+    .login-logo-text { font-size: 1rem; font-weight: 700; color: var(--ink); }
+    .login-logo-text span { color: var(--red); }
+    .login-title { font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: .25rem; }
+    .login-sub { font-size: .83rem; color: var(--sub); margin-bottom: 2rem; }
+    .login-field { text-align: left; margin-bottom: 1rem; }
+    .login-field label { display: block; font-size: .83rem; font-weight: 600; color: var(--ink); margin-bottom: .4rem; }
+    .login-field input {
+      width: 100%; padding: .75rem .95rem; border: 1.5px solid var(--border); border-radius: 8px;
+      font-family: inherit; font-size: .95rem; color: var(--ink); transition: border-color .18s, box-shadow .18s;
+    }
+    .login-field input:focus { outline: none; border-color: var(--red); box-shadow: 0 0 0 3px rgba(230,57,70,.12); }
+    .pwd-err { display: block; font-size: .8rem; color: var(--coral); margin-top: .35rem; min-height: 1rem; }
+    .login-btn {
+      width: 100%; padding: .85rem; background: var(--red); color: #fff;
+      border: none; border-radius: 8px; font-family: inherit; font-size: .95rem;
+      font-weight: 700; cursor: pointer; margin-top: .5rem; transition: background .2s;
+    }
+    .login-btn:hover { background: var(--red-dark); }
+
+    /* ADMIN */
+    #admin-screen { display: flex; flex-direction: column; min-height: 100vh; }
+    .admin-header {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--ink); border-bottom: 3px solid var(--red);
+      padding: .8rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    }
+    .admin-header-left { display: flex; align-items: center; gap: .7rem; }
+    .admin-logo { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 1.5px solid #c9a227; }
+    .admin-brand { font-size: 1rem; font-weight: 700; color: #fff; white-space: nowrap; }
+    .admin-brand span { color: var(--red); }
+    .sub-badge { background: var(--red); color: #fff; font-size: .73rem; font-weight: 700; padding: .18rem .6rem; border-radius: 99px; }
+    .admin-header-right { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
+    .abtn {
+      padding: .42rem .85rem; border-radius: 7px; font-family: inherit; font-size: .82rem; font-weight: 600;
+      cursor: pointer; border: 1.5px solid var(--red); background: var(--red); color: #fff; transition: all .2s; white-space: nowrap;
+    }
+    .abtn:hover { background: var(--red-dark); border-color: var(--red-dark); }
+    .abtn-outline { background: transparent; color: var(--red); }
+    .abtn-outline:hover { background: var(--red); color: #fff; }
+    .abtn-ghost {
+      display: inline-flex; align-items: center; padding: .42rem .75rem; border-radius: 7px;
+      font-family: inherit; font-size: .82rem; cursor: pointer;
+      border: 1.5px solid rgba(255,255,255,.15); background: transparent; color: rgba(255,255,255,.5);
+      transition: all .2s; white-space: nowrap; text-decoration: none;
+    }
+    .abtn-ghost:hover { border-color: var(--red); color: var(--red); text-decoration: none; }
+    .admin-main { padding: 1.5rem 1.5rem 3rem; flex: 1; }
+
+    /* FILTER */
+    .filter-bar { display: flex; gap: .6rem; flex-wrap: wrap; margin-bottom: 1.2rem; align-items: center; }
+    .filter-bar input[type="text"] {
+      padding: .42rem .8rem; border: 1.5px solid var(--border); border-radius: 7px;
+      font-family: inherit; font-size: .83rem; background: #fff; color: var(--ink); min-width: 200px;
+    }
+    .filter-bar input[type="text"]:focus { outline: none; border-color: var(--red); }
+    .filter-bar select {
+      padding: .42rem .8rem; border: 1.5px solid var(--border); border-radius: 7px;
+      font-family: inherit; font-size: .83rem; background: #fff; color: var(--sub); cursor: pointer;
+    }
+    .filter-count { font-size: .82rem; color: var(--sub); margin-left: .3rem; }
+
+    /* STATS */
+    .stats-row { display: flex; gap: .7rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+    .stat-chip { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: .55rem 1rem; font-size: .82rem; color: var(--sub); white-space: nowrap; }
+    .stat-chip strong { color: var(--red); font-size: 1.15rem; margin-right: .2rem; }
+
+    /* STATES */
+    .state-box { text-align: center; padding: 5rem 1rem; color: var(--sub); }
+    .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--red); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 1rem; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* TABLE */
+    .table-wrap { background: #fff; border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: .82rem; min-width: 1300px; }
+    thead th { background: #fdf8f8; padding: .7rem .9rem; text-align: left; font-weight: 700; color: var(--ink); font-size: .77rem; letter-spacing: .3px; border-bottom: 2px solid var(--border); white-space: nowrap; }
+    tbody tr { border-bottom: 1px solid #f5ecea; }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--red-pale); }
+    td { padding: .65rem .9rem; vertical-align: top; color: var(--ink); line-height: 1.5; }
+    .ci { width: 36px; color: #bbb; text-align: center; font-size: .78rem; }
+    .cd { width: 120px; font-size: .77rem; color: var(--sub); white-space: nowrap; }
+    .cn { width: 70px; font-weight: 600; white-space: nowrap; }
+    .cp { width: 110px; white-space: nowrap; }
+    .ce { max-width: 150px; word-break: break-all; }
+    .expand { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: .81rem; color: var(--sub); line-height: 1.45; cursor: help; }
+    tr:hover .expand { -webkit-line-clamp: unset; overflow: visible; }
+
+    .badge { display: inline-block; padding: .18rem .55rem; border-radius: 99px; font-size: .74rem; font-weight: 600; }
+    .b-new       { background: #e3f2fd; color: #1565c0; }
+    .b-returning { background: #f3e5f5; color: #7b1fa2; }
+    .b-booth     { background: #e8eaf6; color: #3949ab; }
+    .b-truck     { background: #fbe9e7; color: #bf360c; }
+    .b-yes       { background: #e8f5e9; color: #2e7d32; }
+    .b-preparing { background: #fff8e1; color: #f57f17; }
+    .b-na        { background: #f5f5f5; color: #757575; }
+    .b-no        { background: #fce4ec; color: #c62828; }
+    .file-btn { display: inline-flex; align-items: center; gap: .22rem; padding: .25rem .55rem; background: var(--red-pale); border: 1px solid #f0c0c0; border-radius: 5px; font-size: .77rem; font-weight: 600; color: var(--red-dark); white-space: nowrap; text-decoration: none; transition: all .15s; }
+    .file-btn:hover { background: var(--red); color: #fff; text-decoration: none; }
+    .no-file { color: #ccc; font-size: .79rem; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen" class="login-screen">
+  <div class="login-box">
+    <div class="login-logo-wrap">
+      <img src="logo.png" alt="華市集" class="login-logo-img" onerror="this.style.display='none'">
+      <div class="login-logo-text"><span>5/3</span> 華市集 後台</div>
+    </div>
+    <h1 class="login-title">報名資料管理</h1>
+    <p class="login-sub">母親節市集攤商報名系統</p>
+    <form id="login-form">
+      <div class="login-field">
+        <label for="pwd-input">管理員密碼</label>
+        <input type="password" id="pwd-input" placeholder="請輸入密碼" autocomplete="current-password">
+        <small id="pwd-err" class="pwd-err"></small>
+      </div>
+      <button type="submit" class="login-btn">登入後台</button>
+    </form>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen" hidden>
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <img src="logo.png" alt="華市集" class="admin-logo" onerror="this.style.display='none'">
+      <span class="admin-brand"><span>5/3</span> 華市集 後台管理</span>
+      <span id="sub-badge" class="sub-badge" hidden></span>
+    </div>
+    <div class="admin-header-right">
+      <button id="refresh-btn" class="abtn-ghost">↻ 重新整理</button>
+      <button id="export-btn" class="abtn">⬇ 匯出 CSV</button>
+      <a href="index.html" class="abtn-ghost">← 回首頁</a>
+      <button id="logout-btn" class="abtn abtn-outline">登出</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <div id="stats-row" class="stats-row" hidden>
+      <div class="stat-chip"><strong id="s-total">0</strong>筆報名</div>
+      <div class="stat-chip"><strong id="s-booth">0</strong>桌攤/落地</div>
+      <div class="stat-chip"><strong id="s-truck">0</strong>餐車</div>
+      <div class="stat-chip"><strong id="s-new">0</strong>新攤友</div>
+      <div class="stat-chip"><strong id="s-ret">0</strong>舊攤友</div>
+      <div class="stat-chip"><strong id="s-line">0</strong>已加入Line</div>
+    </div>
+    <div id="filter-bar" class="filter-bar" hidden>
+      <input type="text" id="search-input" placeholder="🔍 搜尋姓名、品牌、Email…">
+      <select id="filter-identity">
+        <option value="">所有身分</option>
+        <option value="new">新攤友</option>
+        <option value="returning">舊攤友</option>
+      </select>
+      <select id="filter-booth">
+        <option value="">所有型態</option>
+        <option value="booth">桌攤/落地</option>
+        <option value="truck">餐車</option>
+      </select>
+      <span id="filter-count" class="filter-count"></span>
+    </div>
+    <div id="state-loading" class="state-box"><div class="spinner"></div><p>正在載入報名資料…</p></div>
+    <div id="state-error"   class="state-box" hidden><p style="margin-bottom:1.2rem">⚠️ <span id="err-msg">載入失敗</span></p><button onclick="loadData()" class="abtn">重試</button></div>
+    <div id="state-empty"   class="state-box" hidden><p>目前尚無報名資料</p></div>
+    <div id="table-wrap" class="table-wrap" hidden>
+      <table>
+        <thead>
+          <tr>
+            <th class="ci">#</th>
+            <th class="cd">報名時間</th>
+            <th class="cn">姓名</th>
+            <th style="min-width:110px">品牌/攤位</th>
+            <th class="cp">手機</th>
+            <th class="ce">Email</th>
+            <th style="width:82px">身分</th>
+            <th style="width:88px">型態</th>
+            <th style="min-width:160px">販售品項</th>
+            <th style="width:82px">責任險</th>
+            <th style="width:82px">食品登錄</th>
+            <th style="width:90px">責任險文件</th>
+            <th style="width:90px">食品登錄文件</th>
+            <th style="min-width:150px">備註</th>
+            <th style="width:72px">Line</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </main>
+</div>
+
+<script>
+const ADMIN_PWD = 'hua@2026';
+const GAS_URL   = 'https://script.google.com/macros/s/AKfycbyq_RNKI37m1pH1_BiwZy4Ta0EaGuzJ-Pxhu51i04KH1b-rdQP3T3BfoSS9gVev9w/exec';
+let allSubs = [], filteredSubs = [];
+
+document.getElementById('login-form').addEventListener('submit', e => {
+  e.preventDefault();
+  if (document.getElementById('pwd-input').value === ADMIN_PWD) {
+    document.getElementById('login-screen').hidden = true;
+    document.getElementById('admin-screen').hidden = false;
+    loadData();
+  } else {
+    document.getElementById('pwd-err').textContent = '密碼錯誤，請再試一次';
+    document.getElementById('pwd-input').select();
+  }
+});
+document.getElementById('logout-btn').addEventListener('click', () => {
+  document.getElementById('admin-screen').hidden = true;
+  document.getElementById('login-screen').hidden = false;
+  document.getElementById('pwd-input').value = '';
+  document.getElementById('pwd-err').textContent = '';
+  allSubs = []; filteredSubs = [];
+});
+document.getElementById('refresh-btn').addEventListener('click', loadData);
+['search-input','filter-identity','filter-booth'].forEach(id => document.getElementById(id)?.addEventListener('input', applyFilters));
+
+async function loadData() {
+  setState('loading');
+  try {
+    const res = await fetch(GAS_URL);
+    if (!res.ok) throw new Error('GAS 回應錯誤 ' + res.status);
+    const raw = await res.json();
+    if (raw?.error) throw new Error('GAS 錯誤：' + raw.error);
+    allSubs = (Array.isArray(raw) ? raw : []).map(row => ({
+      created_at: row['報名時間'] || '',
+      data: {
+        fullName:         row['姓名']          || '',
+        organization:     row['品牌/攤位名稱'] || '',
+        phone:            row['手機']           || '',
+        email:            row['Email']          || '',
+        vendorIdentity:   row['參加身分'] === '新攤友' ? 'new' : row['參加身分'] === '舊攤友' ? 'returning' : row['參加身分'] || '',
+        boothType:        row['參加型態'] === '桌攤/落地攤' ? 'booth' : row['參加型態'] === '餐車' ? 'truck' : row['參加型態'] || '',
+        productInfo:      row['販售品項']       || '',
+        insurance:        row['產品責任險'] === '已具備' ? 'yes' : row['產品責任險'] === '準備中' ? 'preparing' : row['產品責任險'] === '非餐飲攤商' ? 'na' : row['產品責任險'] || '',
+        foodRegistration: row['食品登錄字號'] === '已具備' ? 'yes' : row['食品登錄字號'] === '準備中' ? 'preparing' : row['食品登錄字號'] === '非餐飲攤商' ? 'na' : row['食品登錄字號'] || '',
+        insuranceFile:    row['責任險文件']     || '',
+        foodFile:         row['食品登錄文件']   || '',
+        motivation:       row['備註']           || '',
+        lineJoined:       row['已加入Line'] === '是' ? 'yes' : 'no',
+      }
+    }));
+    if (!allSubs.length) { setState('empty'); return; }
+    renderStats(allSubs); applyFilters(); setState('table');
+  } catch(err) {
+    document.getElementById('err-msg').textContent = err.message;
+    setState('error'); console.error(err);
+  }
+}
+
+function setState(s) {
+  document.getElementById('state-loading').hidden = s !== 'loading';
+  document.getElementById('state-error').hidden   = s !== 'error';
+  document.getElementById('state-empty').hidden   = s !== 'empty';
+  document.getElementById('table-wrap').hidden    = s !== 'table';
+  document.getElementById('stats-row').hidden     = s !== 'table';
+  document.getElementById('filter-bar').hidden    = s !== 'table';
+  const b = document.getElementById('sub-badge'); b.hidden = s !== 'table';
+  if (s === 'table') b.textContent = '共 ' + allSubs.length + ' 筆';
+}
+function renderStats(subs) {
+  const c = fn => subs.filter(fn).length;
+  document.getElementById('s-total').textContent = subs.length;
+  document.getElementById('s-booth').textContent = c(s => s.data.boothType === 'booth');
+  document.getElementById('s-truck').textContent = c(s => s.data.boothType === 'truck');
+  document.getElementById('s-new').textContent   = c(s => s.data.vendorIdentity === 'new');
+  document.getElementById('s-ret').textContent   = c(s => s.data.vendorIdentity === 'returning');
+  document.getElementById('s-line').textContent  = c(s => s.data.lineJoined === 'yes');
+}
+function applyFilters() {
+  const q   = document.getElementById('search-input').value.toLowerCase();
+  const idn = document.getElementById('filter-identity').value;
+  const bth = document.getElementById('filter-booth').value;
+  filteredSubs = allSubs.filter(sub => {
+    const d = sub.data;
+    if (idn && d.vendorIdentity !== idn) return false;
+    if (bth && d.boothType !== bth) return false;
+    if (q) { const hay = [d.fullName, d.organization, d.email, d.phone, d.productInfo].join(' ').toLowerCase(); if (!hay.includes(q)) return false; }
+    return true;
+  });
+  const c = document.getElementById('filter-count');
+  if (c) c.textContent = filteredSubs.length < allSubs.length ? `顯示 ${filteredSubs.length} / ${allSubs.length} 筆` : '';
+  renderTable(filteredSubs);
+}
+
+const IDENTITY = { new:['新攤友','b-new'], returning:['舊攤友','b-returning'] };
+const BOOTH    = { booth:['桌攤/落地','b-booth'], truck:['餐車','b-truck'] };
+const STATUS   = { yes:['已具備','b-yes'], preparing:['準備中','b-preparing'], na:['非餐飲','b-na'] };
+const JOINED   = { yes:['✓ 是','b-yes'], no:['✗ 否','b-no'] };
+
+function badge(map, val) {
+  const m = map[val];
+  if (!m) return '<span class="no-file">' + (esc(val)||'—') + '</span>';
+  return '<span class="badge ' + m[1] + '">' + m[0] + '</span>';
+}
+function renderTable(subs) {
+  const tbody = document.getElementById('tbody'); tbody.innerHTML = '';
+  subs.forEach((sub, i) => {
+    const d = sub.data, dt = new Date(sub.created_at);
+    const dts = isNaN(dt) ? '—' : dt.getFullYear()+'/'+pad(dt.getMonth()+1)+'/'+pad(dt.getDate())+' '+pad(dt.getHours())+':'+pad(dt.getMinutes());
+    const tr = document.createElement('tr');
+    tr.innerHTML = '<td class="ci">'+(i+1)+'</td><td class="cd">'+dts+'</td><td class="cn">'+esc(d.fullName)+'</td><td>'+esc(d.organization)+'</td>'+
+      '<td class="cp"><a href="tel:'+esc(d.phone)+'">'+esc(d.phone)+'</a></td>'+
+      '<td class="ce"><a href="mailto:'+esc(d.email)+'">'+esc(d.email)+'</a></td>'+
+      '<td>'+badge(IDENTITY,d.vendorIdentity)+'</td><td>'+badge(BOOTH,d.boothType)+'</td>'+
+      '<td><div class="expand" title="'+esc(d.productInfo)+'">'+esc(d.productInfo)+'</div></td>'+
+      '<td>'+badge(STATUS,d.insurance)+'</td><td>'+badge(STATUS,d.foodRegistration)+'</td>'+
+      '<td>'+flink(d.insuranceFile)+'</td><td>'+flink(d.foodFile)+'</td>'+
+      '<td><div class="expand" title="'+esc(d.motivation)+'">'+esc(d.motivation)+'</div></td>'+
+      '<td>'+badge(JOINED,d.lineJoined)+'</td>';
+    tbody.appendChild(tr);
+  });
+}
+function flink(f) {
+  if (!f) return '<span class="no-file">—</span>';
+  const u = typeof f === 'string' ? f : (f?.url||'');
+  if (!u) return '<span class="no-file">—</span>';
+  return '<a href="'+esc(u)+'" target="_blank" rel="noopener" class="file-btn">📄 查看</a>';
+}
+function esc(s) { if (!s&&s!==0) return '—'; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pad(n) { return String(n).padStart(2,'0'); }
+
+document.getElementById('export-btn').addEventListener('click', () => {
+  const data = filteredSubs.length ? filteredSubs : allSubs;
+  if (!data.length) { alert('目前沒有資料可匯出'); return; }
+  const HDR = ['#','報名時間','姓名','品牌/攤位名稱','手機','Email','身分','型態','販售品項','產品責任險','食品登錄字號','責任險文件','食品登錄文件','備註','已加入Line'];
+  const rows = data.map((sub,i) => {
+    const d = sub.data, dt = new Date(sub.created_at);
+    const dts = isNaN(dt)?'':dt.getFullYear()+'/'+pad(dt.getMonth()+1)+'/'+pad(dt.getDate())+' '+pad(dt.getHours())+':'+pad(dt.getMinutes());
+    return [i+1,dts,d.fullName,d.organization,d.phone,d.email,
+      (IDENTITY[d.vendorIdentity]||[''])[0],(BOOTH[d.boothType]||[''])[0],
+      d.productInfo,(STATUS[d.insurance]||[''])[0],(STATUS[d.foodRegistration]||[''])[0],
+      typeof d.insuranceFile==='string'?d.insuranceFile:(d.insuranceFile?.url||''),
+      typeof d.foodFile==='string'?d.foodFile:(d.foodFile?.url||''),
+      d.motivation,d.lineJoined==='yes'?'是':'否',
+    ].map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',');
+  });
+  const csv='\uFEFF'+[HDR.map(h=>'"'+h+'"').join(','),...rows].join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url=URL.createObjectURL(blob),a=document.createElement('a');
+  const today=new Date().toLocaleDateString('zh-TW',{year:'numeric',month:'2-digit',day:'2-digit'}).replace(/\//g,'-');
+  a.href=url; a.download='華市集503報名_'+today+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+});
+</script>
+</body>
+</html>
