@@ -743,3 +743,153 @@ input[type="file"] { display: none; }
   padding: .25rem .7rem; transition: all .2s;
 }
 .admin-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ════════════════════════════════
+   照片系統
+   ════════════════════════════════ */
+
+/* ── Hero 背景照片 ── */
+.hero-bg-photo {
+  position: absolute; inset: 0; z-index: 0;
+}
+.hero-bg-photo img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  opacity: .13;
+  filter: blur(2px) saturate(.5);
+}
+
+/* ── Hero h1-sub 地點標記 ── */
+.h1-loc {
+  font-style: normal;
+  color: var(--gold-light);
+  font-size: .9em;
+}
+
+/* ── Hero 右側照片欄 ── */
+.hero-right { width: 440px; flex-shrink: 0; }
+@media (max-width: 860px) { .hero-right { width: 100%; max-width: 480px; } }
+
+.hero-photocol {
+  display: flex; flex-direction: column; gap: .5rem;
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 12px 50px rgba(0,0,0,.55);
+}
+.hpc-main { position: relative; overflow: hidden; height: 210px; }
+.hpc-main img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .5s ease;
+}
+.hpc-main:hover img { transform: scale(1.05); }
+.hpc-badge {
+  position: absolute; bottom: .75rem; left: .75rem;
+  background: rgba(26,21,16,.85);
+  border: 1px solid var(--gold);
+  color: var(--gold); font-size: .72rem; font-weight: 700;
+  padding: .28rem .85rem; border-radius: 99px;
+  backdrop-filter: blur(4px); letter-spacing: .4px;
+}
+.hpc-sub {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
+  height: 120px;
+}
+.hpc-sm { overflow: hidden; border-radius: 4px; }
+.hpc-sm img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+.hpc-sm:hover img { transform: scale(1.07); }
+.hpc-info {
+  background: rgba(26,21,16,.97);
+  border-top: 2px solid var(--gold);
+  padding: 1rem 1.2rem; display: flex;
+  flex-direction: column; gap: .65rem;
+}
+.hpi-row { display: flex; flex-direction: column; gap: .4rem; }
+.hpi-item { display: flex; gap: .7rem; align-items: flex-start; }
+.hpi-item > span { font-size: .95rem; flex-shrink: 0; margin-top: .05rem; }
+.hpi-item b { display: block; color: #fff; font-size: .85rem; font-weight: 700; }
+.hpi-item small { color: rgba(255,255,255,.4); font-size: .72rem; }
+.hpi-fee { display: flex; gap: .6rem; flex-wrap: wrap; padding-top: .2rem; }
+.fee-tag {
+  background: var(--gold); color: var(--ink);
+  font-size: .77rem; font-weight: 700;
+  padding: .25rem .85rem; border-radius: 99px;
+}
+.fee-tag--outline {
+  background: transparent;
+  border: 1px solid var(--gold); color: var(--gold);
+}
+
+/* ── 市集現場 Scene Section ── */
+.scene-section {
+  padding: 5rem 0;
+  background: var(--ivory-dark);
+}
+.scene-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 1fr;
+  gap: .9rem;
+  height: 480px;
+  margin-top: 2.5rem;
+}
+.sg-col { display: flex; flex-direction: column; gap: .9rem; }
+.sg-item {
+  position: relative; overflow: hidden;
+  border-radius: 10px; flex: 1;
+  min-height: 0;
+}
+.sg-tall { grid-row: 1; }
+.sg-item img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .5s ease;
+}
+.sg-item:hover img { transform: scale(1.05); }
+.sg-cap {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(26,21,16,.82));
+  color: #fff; padding: 2rem .85rem .65rem;
+  font-size: .78rem; font-weight: 600; letter-spacing: .3px;
+}
+@media (max-width: 760px) {
+  .scene-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    height: auto;
+  }
+  .sg-col { flex-direction: row; gap: .9rem; }
+  .sg-tall:last-child { display: none; }
+  .sg-col .sg-item { flex: 1; height: 200px; }
+}
+@media (max-width: 480px) {
+  .scene-grid { grid-template-columns: 1fr; }
+  .sg-col { flex-direction: column; }
+  .sg-tall:first-child { height: 220px; }
+}
+
+/* ── 照片橫幅 Photo Banner ── */
+.photo-banner {
+  position: relative; height: 380px; overflow: hidden;
+}
+.photo-banner img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transform: scale(1.04); transition: transform 10s ease;
+}
+.photo-banner:hover img { transform: scale(1); }
+.pb-content {
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, rgba(26,21,16,.9) 0%, rgba(26,21,16,.45) 55%, transparent 100%);
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: 0 clamp(1.5rem, 7vw, 5rem);
+}
+.pb-sub { color: rgba(255,255,255,.6); font-size: 1rem; margin-bottom: .35rem; }
+.pb-title {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.6rem, 4vw, 2.6rem); font-weight: 900;
+  color: var(--gold); line-height: 1.2;
+  margin-bottom: 1.8rem;
+}
+@media (max-width: 600px) {
+  .photo-banner { height: 260px; }
+  .pb-title { font-size: 1.5rem; margin-bottom: 1.2rem; }
+}
