@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://live.staticflickr.com; connect-src https://script.google.com https://script.googleusercontent.com; frame-ancestors 'none'; base-uri 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="no-referrer">
   <title>5/3 華市集 × 母親節市集 — 招商報名</title>
   <meta name="description" content="5/3 華市集母親節檔期。11棟社區聯辦、2000戶住戶、母親節黃金檔期。品類控管、人流結構已建立，現開放第二波招商。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -562,6 +565,11 @@
             <span>我已閱讀並同意攤商規範、請假機制、費用說明與個人資料蒐集用途。</span>
           </label>
           <small class="check-err"></small>
+
+          <!-- Honeypot：人類看不到，機器人會填 -->
+          <div style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" aria-hidden="true">
+            <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" value=""></label>
+          </div>
 
           <!-- 送出 -->
           <div class="form-submit">
